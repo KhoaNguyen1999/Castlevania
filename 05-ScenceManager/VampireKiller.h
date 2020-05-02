@@ -20,11 +20,21 @@
 #define VAMPIRE_KILLER_LEVEL_PURPLE	2
 #define VAMPIRE_KILLER_LEVEL_RED	3
 
+#define VAMPIRE_KILLER_NORMAL_BEGIN_BOX_HEIGHT	30
+#define VAMPIRE_KILLER_NORMAL_BEGIN_BOX_WIDTH	5
+
+#define VAMPIRE_KILLER_NORMAL_MIDDLE_BOX_HEIGHT	20
+#define VAMPIRE_KILLER_NORMAL_MIDDLE_BOX_WIDTH	5
+
+#define VAMPIRE_KILLER_NORMAL_END_BOX_HEIGHT	10
+#define VAMPIRE_KILLER_NORMAL_END_BOX_WIDTH		25
+
 class VampireKiller : public CGameObject
 {
 private:
 	int level;
 	int activeTime;
+	int currentVampireKillerFrame;
 	static VampireKiller* _instance;
 	DWORD attack_start;
 	CGameObject* simon;

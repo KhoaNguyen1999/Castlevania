@@ -122,8 +122,16 @@ void Simon::Render()
 
 	else {
 		if (isJump == true) {
-			if (nx > 0) ani = SIMON_ANI_JUMP_RIGHT;
-			else ani = SIMON_ANI_JUMP_LEFT;
+			if (isAttack == false) {
+				if (nx > 0) ani = SIMON_ANI_JUMP_RIGHT;
+				else ani = SIMON_ANI_JUMP_LEFT;
+			}
+
+			else if (isAttack == true) {
+				if (nx > 0) ani = SIMON_ANI_STAND_ATTACK_RIGHT;
+				else ani = SIMON_ANI_STAND_ATTACK_LEFT;
+			}
+			
 		}
 
 		//idle state

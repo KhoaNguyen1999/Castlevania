@@ -14,137 +14,110 @@ VampireKiller* VampireKiller::GetInstance()
 VampireKiller::VampireKiller() {
 	level = VAMPIRE_KILLER_LEVEL_NORMAL;
 	SetState(VAMPIRE_KILLER_STATE_INACTIVE);
-	VampireKillerPosLoop = 0;
 	activeTime = 0;
+	currentVampireKillerFrame = 0;
 	isAttack = false;
 }
 
-void VampireKiller::SetPosition() {
-	Simon::GetInstance()->GetPosition(x, y);
-	if (VampireKillerPosLoop == 1) {
-		x += 100;
-		VampireKillerPosLoop++;
-	}
-
-
-}
 
 void VampireKiller::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
-	CGameObject::Update(dt);
 
-	vector<LPCOLLISIONEVENT> coEvents;
-	vector<LPCOLLISIONEVENT> coEventsResult;
+	if (Simon::GetInstance()->GetState() != SIMON_STATE_DIE) {
 
-	//if(simon->GetState() != SIMON_STATE_DIE)
-		//CalcPotentialCollisions(coObjects, coEvents);
+		CGameObject::Update(dt);
 
-	//when simon atack 
-	if (Simon::GetInstance()->AttackState() == true) {
-		//update current position of vampire killer based on simon
-		if ((GetTickCount() - Simon::GetInstance()->GetAttackTime()) >= activeTime && isAttack == true) {
+		vector<LPCOLLISIONEVENT> coEvents;
+		vector<LPCOLLISIONEVENT> coEventsResult;
 
-			if (activeTime == 0 && isAttack == true) {
-				Simon::GetInstance()->GetPosition(x, y);
+
+		//when simon atack 
+		if (Simon::GetInstance()->AttackState() == true) {
+			//update current position of vampire killer based on simon
+
+			//update attack pos y when jump
+			if (Simon::GetInstance()->isJump == true) {
+				float currentPosY;
+				float currentPosX;
+				Simon::GetInstance()->GetPosition(currentPosX, currentPosY);
+				y = currentPosY;
 			}
 
-			if (activeTime >= (2* VAMPIRE_KILLER_FRAME_TIME)) {
-				if (Simon::GetInstance()->nx > 0) {
-					x += 22;
+			//update x, y based on simon
+			if ((GetTickCount() - Simon::GetInstance()->GetAttackTime()) >= activeTime && isAttack == true) {
+
+				//start frame
+				if (activeTime == 0 && isAttack == true) {
+					Simon::GetInstance()->GetPosition(x, y);
+					currentVampireKillerFrame = 0;
 				}
+
+				if (activeTime >= (2 * VAMPIRE_KILLER_FRAME_TIME)) {
+					if (Simon::GetInstance()->nx > 0) {
+						x += 22;
+					}
+
+					else {
+						x -= 35;
+					}
+
+					y -= 1;
+					isAttack = false;
+					activeTime = 0;
+				}
+
 
 				else {
-					x -= 35;
+					if (Simon::GetInstance()->nx > 0) {
+						//frame 1
+						if (activeTime < VAMPIRE_KILLER_FRAME_TIME) {
+							x -= 5;
+							y += 5;
+							currentVampireKillerFrame = 1;
+						}
+
+						//frame 2
+						else if (activeTime < (2 * VAMPIRE_KILLER_FRAME_TIME)) {
+							x += 1;
+							y -= 3;
+							currentVampireKillerFrame = 2;
+						}
+					}
+
+
+					else if (Simon::GetInstance()->nx < 0) {
+						//frame 1
+						if (activeTime < VAMPIRE_KILLER_FRAME_TIME) {
+							x += 20;
+							y += 5;
+							currentVampireKillerFrame = 1;
+						}
+
+						//frame 2
+						else if (activeTime < (2 * VAMPIRE_KILLER_FRAME_TIME)) {
+							x -= 4;
+							y -= 2;
+							currentVampireKillerFrame = 2;
+						}
+					}
+
+					//increase time to calculate frame
+					activeTime += VAMPIRE_KILLER_FRAME_TIME;
+
+
 				}
-				
-				y -= 1;
-				isAttack = false;
-				activeTime = 0;
-			}
-				
 
-			else {
-				if (Simon::GetInstance()->nx > 0) {
-					//frame 1
-					if (activeTime < VAMPIRE_KILLER_FRAME_TIME) {
-						x -= 5;
-						y += 5;
-					}
 
-					//frame 2
-					else if (activeTime < (2* VAMPIRE_KILLER_FRAME_TIME)) {
-						x += 1;
-						y -= 3;
-					}
-				}
-					
 
-				else if (Simon::GetInstance()->nx < 0) {
-					//frame 1
-					if (activeTime < VAMPIRE_KILLER_FRAME_TIME) {
-						x += 20;
-						y += 5;
-					}
-
-					//frame 2
-					else if (activeTime < (2 * VAMPIRE_KILLER_FRAME_TIME)) {
-						x -= 4;
-						y -= 2;
-					}
-				}
-					
-				
-				activeTime += VAMPIRE_KILLER_FRAME_TIME;
-
-				
 			}
 
-			
-			
+
 		}
-		//Get simon position
-		//SetPosition();
-		//update follow frame
 
+		
 
 	}
+	
 
-	if (coEvents.size() == 0)
-	{
-		//no collision detected
-		//Simon::GetInstance()->GetPosition(x, y);
-	}
-
-
-
-	else
-	{
-		float min_tx, min_ty, nx = 0, ny;
-		float rdx = 0;
-		float rdy = 0;
-
-		// TODO: This is a very ugly designed function!!!!
-		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
-
-		// how to push back Mario if collides with a moving objects, what if Mario is pushed this way into another object?
-		//if (rdx != 0 && rdx!=dx)
-		//	x += nx*abs(rdx); 
-
-		// block every object first!
-		x += min_tx * dx + nx * 0.4f;
-		y += min_ty * dy + ny * 0.4f;
-
-		if (nx != 0) vx = 0;
-		if (ny != 0) vy = 0;
-
-
-		//
-		// Collision logic with other objects
-		//
-		for (UINT i = 0; i < coEventsResult.size(); i++)
-		{
-			LPCOLLISIONEVENT e = coEventsResult[i];
-		}
-	}
 }
 
 void VampireKiller::Render() {
@@ -165,7 +138,7 @@ void VampireKiller::Render() {
 
 		RenderBoundingBox();
 	}
-	
+
 
 }
 
@@ -185,6 +158,30 @@ void VampireKiller::SetState(int state) {
 }
 
 void VampireKiller::GetBoundingBox(float& left, float& top, float& right, float& bottom) {
+	if (Simon::GetInstance()->isAttack == true) {
+		if (currentVampireKillerFrame == 0) {
+			left = x;
+			top = y;
+			right = x + VAMPIRE_KILLER_NORMAL_BEGIN_BOX_WIDTH;
+			bottom = y + VAMPIRE_KILLER_NORMAL_BEGIN_BOX_HEIGHT;
+		}
+
+		else if (currentVampireKillerFrame == 1) {
+			left = x;
+			top = y;
+			right = x + VAMPIRE_KILLER_NORMAL_MIDDLE_BOX_WIDTH;
+			bottom = y + VAMPIRE_KILLER_NORMAL_MIDDLE_BOX_HEIGHT;
+		}
+
+		else
+		{
+			left = x;
+			top = y;
+			right = x + VAMPIRE_KILLER_NORMAL_END_BOX_WIDTH;
+			bottom = y + VAMPIRE_KILLER_NORMAL_END_BOX_HEIGHT;
+		}
+	}
+
 
 }
 

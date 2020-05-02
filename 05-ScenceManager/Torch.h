@@ -1,9 +1,13 @@
 #pragma once
 #include "Simon.h"
+#include "VampireKiller.h"
 #include "GameObject.h"
+
+
 
 #define TORCH_STATE_PILLAR	0
 #define TORCH_STATE_CANDLE	100
+#define TORCH_STATE_HEART	200
 #define TORCH_STATE_DESTROY	900
 
 

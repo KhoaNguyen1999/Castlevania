@@ -46,7 +46,7 @@
 #define SIMON_ANI_DIE				10
 
 
-#define SIMON_ATTACK_TIME	3000
+#define SIMON_ATTACK_TIME	600
 
 #define SIMON_BOX_WIDTH  15
 #define SIMON_BOX_HEIGHT 27
@@ -55,18 +55,19 @@
 #define SIMON_BOX_CROUCH_HEIGHT	22
 #define	SIMON_STAND_UP_HEIGHT	7
 
-#define SIMON_ATTACK_TIME		500
 #define SIMON_UNTOUCHABLE_TIME 5000
 
 class Simon : public CGameObject
 {
 	static Simon* _instance;
+	
 	int untouchable;
 	DWORD untouchable_start;
 	DWORD attack_time;
 
 public:
 	Simon();
+	
 	static Simon* GetInstance();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
 	virtual void Render();

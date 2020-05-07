@@ -169,7 +169,7 @@ void Simon::Render()
 
 		//move state
 		else {
-			if (vx > 0 && isJump == false)
+			if (vx > 0 && isJump == false )
 				ani = SIMON_ANI_WALKING_RIGHT;
 			else if (vx < 0 && isJump == false) ani = SIMON_ANI_WALKING_LEFT;
 		}

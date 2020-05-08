@@ -19,6 +19,10 @@ VampireKiller::VampireKiller() {
 	isAttack = false;
 }
 
+void VampireKiller::SetLevel(int value) {
+	level = value;
+}
+
 
 void VampireKiller::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 
@@ -124,11 +128,25 @@ void VampireKiller::Render() {
 	int ani = -1;
 
 	if (Simon::GetInstance()->AttackState() == true) {
-		if (Simon::GetInstance()->nx < 0)
-			ani = VAMPIRE_KILLER_ANI_ATTACK_LEFT;
+		if (Simon::GetInstance()->nx < 0) {
+			if (level == VAMPIRE_KILLER_LEVEL_NORMAL) {
+				ani = VAMPIRE_KILLER_ANI_ATTACK_LEFT;
+			}
+
+			else if (level == VAMPIRE_KILLER_LEVEL_ORANGE) {
+				ani = VAMPIRE_KILLER_ANI_ORANGE_ATTACK_LEFT;
+			}
+		}
 
 		else {
-			ani = VAMPIRE_KILLER_ANI_ATTACK_RIGHT;
+			if (level == VAMPIRE_KILLER_LEVEL_NORMAL) {
+				ani = VAMPIRE_KILLER_ANI_ATTACK_RIGHT;
+			}
+
+			else if (level == VAMPIRE_KILLER_LEVEL_ORANGE) {
+				ani = VAMPIRE_KILLER_ANI_ORANGE_ATTACK_RIGHT;
+			}
+			
 		}
 
 

@@ -14,6 +14,8 @@
 
 #define VAMPIRE_KILLER_ANI_ATTACK_RIGHT		0
 #define VAMPIRE_KILLER_ANI_ATTACK_LEFT		1
+#define VAMPIRE_KILLER_ANI_ORANGE_ATTACK_RIGHT		2
+#define VAMPIRE_KILLER_ANI_ORANGE_ATTACK_LEFT		3
 
 #define VAMPIRE_KILLER_LEVEL_NORMAL	0
 #define VAMPIRE_KILLER_LEVEL_ORANGE	1
@@ -44,6 +46,7 @@ public:
 	static VampireKiller* GetInstance();
 	int VampireKillerPosLoop;
 	void SetPosition();
+	void SetLevel(int value);
 	int attackStart;
 	int attack_pause;
 	boolean active = false;

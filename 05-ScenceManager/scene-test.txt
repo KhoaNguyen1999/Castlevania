@@ -97,9 +97,16 @@
 60005	10	247	32	271	0
 
 
+
 #vampire killer level 1 right
+60006	156	326	164	351	0
+60007	196	325	212	344	0
+60008	265	329	304	335	0
 
 #vampire killer level 1 left
+60009	140	326	148	351	0
+60010	92	325	108	344	0
+60011	0	329	32	355	0
 
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
@@ -155,6 +162,10 @@
 900	60000	200	60001	200	60002	200
 # 0 attack_left
 901	60003	200	60004	200	60005	200
+# 1 attack_right
+902	60006	200	60007	200	60008	200
+# 1 attack_left
+903	60009	200	60010	200	60011	200
 
 #
 # id	ani1	ani2	ani3
@@ -181,7 +192,7 @@
 50	1000	1001	1002
 
 #VAMPIRE KILLER
-60	900	901
+60	900	901	902	903
 
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type

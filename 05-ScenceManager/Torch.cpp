@@ -31,14 +31,19 @@ Torch& Torch::operator=(const Torch& origin) {
 
 void Torch::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 
+	CGameObject::Update(dt);
+
 	if (state == TORCH_STATE_DESTROY) {
 		if (itemValue == WHIP_VALUE) {
-			VampireKiller::GetInstance()->SetLevel(1);
+			if(VampireKiller::GetInstance()->GetLevel() == VAMPIRE_KILLER_LEVEL_NORMAL)
+				VampireKiller::GetInstance()->SetLevel(VAMPIRE_KILLER_LEVEL_ORANGE);
+
+			if (VampireKiller::GetInstance()->GetLevel() == VAMPIRE_KILLER_LEVEL_ORANGE)
+				VampireKiller::GetInstance()->SetLevel(VAMPIRE_KILLER_LEVEL_PURPLE);
 		}
 	}
 
 	if (state != TORCH_STATE_DESTROY) {
-		CGameObject::Update(dt);
 
 		for (UINT i = 0; i < coObjects->size(); i++)
 		{
@@ -46,7 +51,6 @@ void Torch::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 				//collide with vampire killer
 				if (dynamic_cast<VampireKiller*>(coObjects->at(i))) {
 
-					//VampireKiller* torch = dynamic_cast<VampireKiller*>(coObjects->at(i));
 					float l, t, r, b, l1, t1, r1, b1;
 					GetBoundingBox(l, t, r, b);
 
@@ -62,7 +66,23 @@ void Torch::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 			}
 
 			if (state == TORCH_STATE_ITEM) {
+				vy += ITEM_GRAVITY * dt;
 
+				vector<LPCOLLISIONEVENT> coEvents;
+				vector<LPCOLLISIONEVENT> coEventsResult;
+
+				coEvents.clear();
+				CalcPotentialCollisions(coObjects, coEvents);
+
+				float min_tx, min_ty, nx = 0, ny;
+				float rdx = 0;
+				float rdy = 0;
+
+				FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+
+				y += min_ty * dy + ny * 0.4f;
+
+				if (ny != 0) vy = 0;
 
 			}
 		}
@@ -83,14 +103,20 @@ void Torch::Render()
 			{
 			case 1:
 				//render animation item heart here
-				animation_set->at(torchID)->Render(x, y);
+				animation_set->at(TORCH_ANI_HEART)->Render(x, y);
 				this->currentAni = TORCH_ANI_HEART;
 				itemValue = HEART_VALUE;
 				break;
 
 			case 2:
 				//render animation item whip here
-				animation_set->at(torchID)->Render(x, y);
+				animation_set->at(TORCH_ANI_WHIP)->Render(x, y);
+				this->currentAni = TORCH_ANI_WHIP;
+				itemValue = WHIP_VALUE;
+				break;
+
+			case 3:
+				animation_set->at(TORCH_ANI_WHIP)->Render(x, y);
 				this->currentAni = TORCH_ANI_WHIP;
 				itemValue = WHIP_VALUE;
 				break;
@@ -125,8 +151,8 @@ void Torch::GetBoundingBox(float& l, float& t, float& r, float& b)
 	else if (state == TORCH_STATE_ITEM) {
 		l = x;
 		t = y;
-		r = x + TORCH_PILLAR_WIDTH;
-		b = y + TORCH_PILLAR_HEIGHT;
+		r = x + 12;
+		b = y + 15;
 	}
 
 	else {

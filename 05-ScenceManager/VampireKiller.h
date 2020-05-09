@@ -16,6 +16,8 @@
 #define VAMPIRE_KILLER_ANI_ATTACK_LEFT		1
 #define VAMPIRE_KILLER_ANI_ORANGE_ATTACK_RIGHT		2
 #define VAMPIRE_KILLER_ANI_ORANGE_ATTACK_LEFT		3
+#define VAMPIRE_KILLER_ANI_PURPLE_ATTACK_RIGHT		4
+#define VAMPIRE_KILLER_ANI_PURPLE_ATTACK_LEFT		5
 
 #define VAMPIRE_KILLER_LEVEL_NORMAL	0
 #define VAMPIRE_KILLER_LEVEL_ORANGE	1
@@ -59,6 +61,7 @@ public:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
 	virtual void Render();
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	int GetLevel();
 
 };
 

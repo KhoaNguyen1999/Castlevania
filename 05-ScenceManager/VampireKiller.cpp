@@ -23,6 +23,10 @@ void VampireKiller::SetLevel(int value) {
 	level = value;
 }
 
+int VampireKiller::GetLevel() {
+	return this->level;
+}
+
 
 void VampireKiller::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 
@@ -49,8 +53,12 @@ void VampireKiller::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 			//update x, y based on simon
 			if ((GetTickCount() - Simon::GetInstance()->GetAttackTime()) >= activeTime && isAttack == true) {
 
+
 				//start frame
 				if (activeTime == 0 && isAttack == true) {
+					for (int i = VAMPIRE_KILLER_ANI_ATTACK_RIGHT; i <= VAMPIRE_KILLER_ANI_PURPLE_ATTACK_LEFT; i++) {
+						animation_set->at(i)->SetCurrentFrame(-1);
+					}
 					Simon::GetInstance()->GetPosition(x, y);
 					currentVampireKillerFrame = 0;
 				}
@@ -136,6 +144,9 @@ void VampireKiller::Render() {
 			else if (level == VAMPIRE_KILLER_LEVEL_ORANGE) {
 				ani = VAMPIRE_KILLER_ANI_ORANGE_ATTACK_LEFT;
 			}
+
+			else if(level == VAMPIRE_KILLER_LEVEL_PURPLE)
+				ani = VAMPIRE_KILLER_ANI_PURPLE_ATTACK_LEFT;
 		}
 
 		else {
@@ -146,6 +157,9 @@ void VampireKiller::Render() {
 			else if (level == VAMPIRE_KILLER_LEVEL_ORANGE) {
 				ani = VAMPIRE_KILLER_ANI_ORANGE_ATTACK_RIGHT;
 			}
+
+			else if (level == VAMPIRE_KILLER_LEVEL_PURPLE)
+				ani = VAMPIRE_KILLER_ANI_PURPLE_ATTACK_RIGHT;
 			
 		}
 

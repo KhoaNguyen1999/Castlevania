@@ -53,10 +53,13 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		untouchable = 0;
 	}
 
-	if (GetTickCount() - attack_time > SIMON_ATTACK_TIME) {
-		isAttack = false;
-		ResetAttackFrame();
+	if (isAttack == true) {
+		if (GetTickCount() - attack_time > SIMON_ATTACK_TIME) {
+			isAttack = false;
+			ResetAttackFrame();
+		}
 	}
+
 
 
 	if (coEvents.size() == 0)
@@ -156,7 +159,8 @@ void Simon::Render()
 			else {
 				if (isCrouch == true ) {
 					ani = SIMON_ANI_CROUCH_LEFT;
-					if (isAttack == true) ani = SIMON_ANI_CROUCH_ATTACK_LEFT;
+					if (isAttack == true) 
+						ani = SIMON_ANI_CROUCH_ATTACK_LEFT;
 				}
 
 				else {

@@ -108,6 +108,16 @@
 60010	92	325	108	344	0
 60011	0	329	32	355	0
 
+#vampire killer level 2 right
+60012	156	367	164	391	0
+60013	196	365	212	384	0
+60014	265	369	304	375	0
+
+#vampire killer level 2 left
+60015	140	367	148	391	0
+60016	92	365	108	384	0
+60017	0	369	32	375	0
+
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
@@ -130,7 +140,7 @@
 802	10036	200	10037	200	10038	200
 #crouch attack right
 803	10039	200	10040	200	10041	200
-#crouch attack ledt
+#crouch attack left
 804	10042	200	10043	200	10044	200
 #die
 599	10099	100
@@ -166,6 +176,10 @@
 902	60006	200	60007	200	60008	200
 # 1 attack_left
 903	60009	200	60010	200	60011	200
+# 2 attack_right
+904	60012	200	60013	200	60014	200
+# 2 attack_left
+905	60015	200	60016	200	60017	200
 
 #
 # id	ani1	ani2	ani3
@@ -192,7 +206,7 @@
 50	1000	1001	1002
 
 #VAMPIRE KILLER
-60	900	901	902	903
+60	900	901	902	903	904	905
 
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
@@ -300,7 +314,7 @@
 2	608	142	40
 
 # SIMON
-0	30	115	1
+0	30	110	1
 
 # VAMPIRE KILLER
 4	17	115	60
@@ -335,6 +349,7 @@
 #TORCH PILLAR
 3	70	141	50
 3	170	141	50
+3	250	141	50
 
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id

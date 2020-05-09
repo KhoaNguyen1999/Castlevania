@@ -360,8 +360,11 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 	else if (game->IsKeyDown(DIK_DOWN) && game->IsKeyDown(DIK_LEFT))
 		simon->SetState(SIMON_STATE_CROUCH_LEFT);
 
-	else if (game->IsKeyDown(DIK_DOWN) && game->IsKeyDown(DIK_Z))
+	else if (game->IsKeyDown(DIK_DOWN) && game->IsKeyDown(DIK_Z)) {
+		simon->SetAttackTime(GetTickCount());
 		simon->SetState(SIMON_STATE_CROUCH_ATTACK);
+	}
+		
 
 	//Non-combination
 

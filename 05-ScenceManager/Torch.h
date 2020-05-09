@@ -20,7 +20,7 @@
 #define TORCH_PILLAR_HEIGHT	14
 #define TORCH_PILLAR_WIDTH	16
 
-#define ITEM_GRAVITY		0.5f
+#define ITEM_GRAVITY		0.00000005f
 
 
 class Torch : public CGameObject

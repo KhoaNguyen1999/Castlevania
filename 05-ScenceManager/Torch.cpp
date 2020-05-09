@@ -18,6 +18,7 @@ int Torch::nextTorchID = 0;
 Torch::Torch() {
 	state = TORCH_STATE_NORMAL;
 	torchID = ++nextTorchID;
+	itemFall = true;
 }
 
 Torch::Torch(const Torch& origin) {
@@ -66,24 +67,29 @@ void Torch::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 			}
 
 			if (state == TORCH_STATE_ITEM) {
-				vy += ITEM_GRAVITY * dt;
+				if (itemFall == true) {
+					vy += ITEM_GRAVITY * dt;
 
-				vector<LPCOLLISIONEVENT> coEvents;
-				vector<LPCOLLISIONEVENT> coEventsResult;
+					vector<LPCOLLISIONEVENT> coEvents;
+					vector<LPCOLLISIONEVENT> coEventsResult;
 
-				coEvents.clear();
-				CalcPotentialCollisions(coObjects, coEvents);
+					coEvents.clear();
+					CalcPotentialCollisions(coObjects, coEvents);
 
-				float min_tx, min_ty, nx = 0, ny;
-				float rdx = 0;
-				float rdy = 0;
+					float min_tx, min_ty, nx = 0, ny;
+					float rdx = 0;
+					float rdy = 0;
 
-				FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+					FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 
-				y += min_ty * dy + ny * 0.4f;
+					y += min_ty * dy + ny * 0.4f;
 
-				if (ny != 0) vy = 0;
-
+					if (ny != 0) {
+						vy = 0;
+						itemFall = false;
+					}
+				}
+						
 			}
 		}
 	}
@@ -110,15 +116,27 @@ void Torch::Render()
 
 			case 2:
 				//render animation item whip here
-				animation_set->at(TORCH_ANI_WHIP)->Render(x, y);
-				this->currentAni = TORCH_ANI_WHIP;
-				itemValue = WHIP_VALUE;
+				animation_set->at(TORCH_ANI_HEART)->Render(x, y);
+				this->currentAni = TORCH_ANI_HEART;
+				itemValue = HEART_VALUE;
 				break;
 
 			case 3:
 				animation_set->at(TORCH_ANI_WHIP)->Render(x, y);
 				this->currentAni = TORCH_ANI_WHIP;
 				itemValue = WHIP_VALUE;
+				break;
+
+			case 4:
+				animation_set->at(TORCH_ANI_WHIP)->Render(x, y);
+				this->currentAni = TORCH_ANI_WHIP;
+				itemValue = WHIP_VALUE;
+				break;
+
+			case 5:
+				animation_set->at(TORCH_ANI_HEART)->Render(x, y);
+				this->currentAni = TORCH_ANI_HEART;
+				itemValue = HEART_VALUE;
 				break;
 
 			default:

@@ -27,6 +27,7 @@ class Torch : public CGameObject
 {
 	static int nextTorchID;
 	boolean isActive;
+	boolean itemFall;
 	static Torch* _instance;
 public:
 	Torch();
